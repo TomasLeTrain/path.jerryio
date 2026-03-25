@@ -1,11 +1,18 @@
 import { makeAutoObservable } from "mobx";
 import { MainApp, getAppStores } from "@core/MainApp";
-import { clamp,makeId } from "@core/Util";
+import { clamp, makeId } from "@core/Util";
 import { UnitOfLength, UnitConverter, Quantity } from "@core/Unit";
 import { GeneralConfig, convertFormat } from "../Config";
 import { Format, importPDJDataFromTextFile } from "../Format";
 import { Control, EndControl, Path, SegmentVariant, Segment, SpeedKeyframe, Vector } from "@core/Path";
-import { AddKeyframe, AddCubicSegment, AddLinearSegment, ConvertSegment, InsertControls, InsertPaths } from "@core/Command";
+import {
+  AddKeyframe,
+  AddCubicSegment,
+  AddLinearSegment,
+  ConvertSegment,
+  InsertControls,
+  InsertPaths
+} from "@core/Command";
 import { PointCalculationResult, getPathPoints } from "@core/Calculation";
 import { BackQuoteString, CodePointBuffer } from "@token/Tokens";
 import { UserInterface } from "@core/Layout";
@@ -13,7 +20,6 @@ import { PathConfigImpl, PathConfigPanel } from "./PathConfig";
 import { GeneralConfigImpl } from "./GeneralConfig";
 
 import { PathConfigImpl as CustomPathConfigImpl } from "./PathConfig";
-
 
 // observable class
 export class CustomFormat implements Format {
@@ -179,7 +185,7 @@ export class CustomFormat implements Format {
     return paths;
   }
 
-	// TODO: actually implement
+  // TODO: actually implement
   importPathsFromCodeSnippet(buffer: ArrayBuffer): Path[] {
     // ALGO: The implementation is adopted from https://github.com/LemLib/Path-Gen under the GPLv3 license.
 
@@ -370,27 +376,27 @@ export class CustomFormat implements Format {
 
     for (const segment of path.segments) {
       if (segment.isCubic()) {
-      rtn +=
-        this.applyTemplate(templates.curve ?? "", {
-          name: "name",
-          x0: segment.controls[0].x.toUser(),
-          y0: segment.controls[0].y.toUser(),
-          x1: segment.controls[1].x.toUser(),
-          y1: segment.controls[1].y.toUser(),
-          x2: segment.controls[2].x.toUser(),
-          y2: segment.controls[2].y.toUser(),
-          x3: segment.controls[3].x.toUser(),
-          y3: segment.controls[3].y.toUser()
-        }) + "\n";
+        rtn +=
+          this.applyTemplate(templates.curve ?? "", {
+            name: "name",
+            x0: segment.controls[0].x.toUser(),
+            y0: segment.controls[0].y.toUser(),
+            x1: segment.controls[1].x.toUser(),
+            y1: segment.controls[1].y.toUser(),
+            x2: segment.controls[2].x.toUser(),
+            y2: segment.controls[2].y.toUser(),
+            x3: segment.controls[3].x.toUser(),
+            y3: segment.controls[3].y.toUser()
+          }) + "\n";
       } else if (segment.isLinear()) {
-	    rtn +=
-	  	  this.applyTemplate(templates.moveToPoint ?? "", {
-		    name: "name",
-	  	    x0: segment.controls[0].x.toUser(),
-	  	    y0: segment.controls[0].y.toUser(),
-	  	    x1: segment.controls[1].x.toUser(),
-	  	    y1: segment.controls[1].y.toUser()
-	  	  }) + "\n";
+        rtn +=
+          this.applyTemplate(templates.moveToPoint ?? "", {
+            name: "name",
+            x0: segment.controls[0].x.toUser(),
+            y0: segment.controls[0].y.toUser(),
+            x1: segment.controls[1].x.toUser(),
+            y1: segment.controls[1].y.toUser()
+          }) + "\n";
       }
     }
 
@@ -413,5 +419,4 @@ export class CustomFormat implements Format {
 
     return rtn;
   }
-
 }

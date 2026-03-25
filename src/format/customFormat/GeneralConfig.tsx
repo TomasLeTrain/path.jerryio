@@ -97,7 +97,6 @@ const GeneralConfigPanel = observer((props: { config: GeneralConfigImpl }) => {
   );
 });
 
-
 // observable class
 export class GeneralConfigImpl implements GeneralConfig {
   @IsPositive()

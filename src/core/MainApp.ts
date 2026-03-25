@@ -136,7 +136,7 @@ export class MainApp {
 
     // maybe shoul load possibly existing file??
     this.newFile();
-	// silly
+    // silly
     this.readLocalFile();
   }
 
@@ -415,11 +415,10 @@ export class MainApp {
     this.paths = [];
   }
 
-	// imports file from local storage
-  async readLocalFile(){
-	const data = await readFileFromLocalStorage();
-	if(data)
-		this.importFile(data);
+  // imports file from local storage
+  async readLocalFile() {
+    const data = await readFileFromLocalStorage();
+    if (data) this.importFile(data);
   }
 
   /**
