@@ -3,6 +3,7 @@ import { getAppStores } from "./MainApp";
 import { enqueueErrorSnackbar, enqueueSuccessSnackbar } from "@app/Notice";
 import { Logger } from "./Logger";
 import { isBraveBrowser, isFirefox } from "./Util";
+import { getPreference } from "./Preferences";
 
 const logger = Logger("I/O");
 
@@ -221,21 +222,25 @@ export async function onNew(saveCheck: boolean = true): Promise<boolean> {
 }
 
 export async function onSave(): Promise<boolean> {
-  const { app } = getAppStores();
-
-  if (isFileSystemSupported() === false) return onDownload(true);
-
-  if (app.mountingFile.handle === null) return onSaveAs();
+  const { app, appPreferences } = getAppStores();
 
   const output = exportFile();
   if (output === undefined) return false;
 
-  if (await writeFile(output)) {
-    app.history.save();
-    return true;
-  } else {
-    return false;
-  }
+  const new_output = new TextDecoder().decode(output);
+
+  appPreferences.lastUsedFile = new_output;
+
+  enqueueSuccessSnackbar(logger, "Saved :)");
+  app.history.save();
+  return true;
+}
+
+export async function readFileFromLocalStorage(): Promise<ArrayBuffer | undefined> {
+  const str = getPreference("lastUsedFile", false);
+  if (!str) return undefined;
+
+  return new Uint8Array(new TextEncoder().encode(str)).buffer;
 }
 
 export async function onSaveAs(): Promise<boolean> {

@@ -12,6 +12,7 @@ export class Preferences {
   public themeType: AppThemeType = AppThemeType.Dark;
   public layoutType: LayoutType = LayoutType.Classic;
   public lastSelectedFormat: string = "path.jerryio v0.1.x (cm, rpm)";
+  public lastUsedFile: string = "";
 
   // Not in local storage
   public isSpeedCanvasVisible: boolean = true; // In classic layout only
@@ -49,7 +50,8 @@ export class Preferences {
       this.link("isExperimentalFeaturesEnabled", "experimentalFeaturesEnabled"),
       this.link("themeType", "theme"),
       this.link("layoutType", "layout"),
-      this.link("lastSelectedFormat", "lastSelectedFormat")
+      this.link("lastSelectedFormat", "lastSelectedFormat"),
+      this.link("lastUsedFile", "lastUsedFile")
     ];
   }
 }

@@ -12,7 +12,7 @@ import { CommandHistory } from "./Command";
 import { SemVer } from "semver";
 import { Confirmation } from "@app/common.blocks/modal/ConfirmationModal";
 import { GoogleAnalytics } from "./GoogleAnalytics";
-import { IOFileHandle } from "./InputOutput";
+import { IOFileHandle, readFileFromLocalStorage } from "./InputOutput";
 import { getPathSamplePoints, getUniformPointsFromSamples } from "./Calculation";
 import { APP_VERSION_STRING } from "../Version";
 import { Logger } from "./Logger";
@@ -134,7 +134,10 @@ export class MainApp {
       }
     );
 
+    // maybe shoul load possibly existing file??
     this.newFile();
+	// silly
+    this.readLocalFile();
   }
 
   onUIReady() {
@@ -410,6 +413,13 @@ export class MainApp {
     this.format = newFormat;
     this.usingUOL = this.gc.uol;
     this.paths = [];
+  }
+
+	// imports file from local storage
+  async readLocalFile(){
+	const data = await readFileFromLocalStorage();
+	if(data)
+		this.importFile(data);
   }
 
   /**
