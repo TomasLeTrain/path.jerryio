@@ -14,7 +14,7 @@ import ViewListIcon from "@mui/icons-material/ViewList";
 import { Box, Card, IconButton, Tooltip, Typography } from "@mui/material";
 import { action, makeAutoObservable } from "mobx";
 import { observer } from "mobx-react-lite";
-import { Segment, EndControl, Path, Control, PathTreeItem } from "@core/Path";
+import { Segment, EndControl, Path, Control, PathTreeItem, isPathTreeItem } from "@core/Path";
 import {
   AddPath,
   MovePathTreeItem,
@@ -135,7 +135,7 @@ class PathTreeVariables {
       }
     | undefined = undefined;
 
-  renaming: Path | undefined = undefined;
+  renaming: PathTreeItem | undefined = undefined;
 
   constructor() {
     makeAutoObservable(this);
@@ -190,7 +190,7 @@ const TreeItem = observer((props: TreeItemProps) => {
 
   const entityIdx = app.allEntityIds.indexOf(entity.uid);
   const children = entity instanceof Path ? entity.controls : undefined;
-  const isNameEditable = entity instanceof Path;
+  const isNameEditable = entity instanceof Path || entity instanceof EndControl || entity instanceof Control;
   const isDraggable = variables.isDraggable(entity);
   const isParentDragging = variables.isParentDragging(entity);
   const isFocused = variables.focused === entity;
@@ -240,10 +240,10 @@ const TreeItem = observer((props: TreeItemProps) => {
     event.stopPropagation();
 
     const purify = DOMPurify();
-    let pathName = purify.sanitize(event.currentTarget.innerText, { ALLOWED_TAGS: [] });
-    if (pathName === "") pathName = initialValue.current;
+    let newName = purify.sanitize(event.currentTarget.innerText, { ALLOWED_TAGS: [] });
+    if (newName === "") newName = initialValue.current;
 
-    app.history.execute(`Update path tree item name to ${pathName}`, new UpdateProperties(entity, { name: pathName }));
+    app.history.execute(`Update path tree item name to ${newName}`, new UpdateProperties(entity, { name: newName }));
 
     initialValue.current = lastValidName.current = event.currentTarget.innerText = entity.name;
     variables.renaming = undefined;
@@ -414,7 +414,8 @@ const TreeItem = observer((props: TreeItemProps) => {
               onClick={e => e.preventDefault()}
             />
           ) : (
-            <span className="PathTreePanel-TreeItemName preview">{entity.name}</span>
+            // can never happen?
+            <span className="PathTreePanel-TreeItemName preview">{}</span>
           )}
           {isEditingName === false && (
             <>

@@ -197,10 +197,9 @@ export class Control extends Vector implements InteractiveEntity {
   @IsBoolean()
   @Expose()
   public visible: boolean = true;
-
-  get name(): string {
-    return "Control";
-  }
+  @MinLength(1)
+  @Expose()
+  public name: string = "Control";
 
   constructor(x: number, y: number) {
     super(x, y);
@@ -237,10 +236,9 @@ export class EndControl extends Vector implements InteractiveEntity, CoordinateW
   @ValidateNumber(num => num >= 0 && num < 360)
   @Expose({ name: "heading" })
   public heading_: number = 0;
-
-  get name(): string {
-    return "End Control";
-  }
+  @MinLength(1)
+  @Expose()
+  public name: string = "End_Control";
 
   constructor(x: number, y: number, heading: number) {
     super(x, y);
@@ -482,6 +480,9 @@ export class Segment implements CanvasEntity {
   @MinLength(10)
   @Expose()
   public uid: string;
+  @MinLength(1)
+  @Expose()
+  public name: string = "Segment";
 
   constructor(); // For class-transformer
   constructor(first: EndControl, last: EndControl);

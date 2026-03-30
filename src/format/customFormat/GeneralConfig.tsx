@@ -131,12 +131,10 @@ export class GeneralConfigImpl implements GeneralConfig {
   coordinateSystem: string = "Cartesian Plane";
   @IsString()
   @Expose()
-  outputTemplate: string = `path: \`// \${name}
-
-\${code}
-\`
-moveToPoint: \`line("\${name}",\${x0}, \${y0},\${x1}, \${y1});\`
-curve: \`curve("\${name}",\${x0},\${y0},\${x1},\${y1},\${x2},\${y2},\${x3},\${y3});\``;
+  outputTemplate: string = `path: \`namespace \${name}_paths {
+\${code}}\`
+moveToPoint: \`auto \${name} = line(\${x0}, \${y0},\${x1}, \${y1});\`
+curve: \`auto \${name} = curve(\${x0},\${y0},\${x1},\${y1},\${x2},\${y2},\${x3},\${y3});\``;
 
   @Exclude()
   private format_: FormatWithExportCode;

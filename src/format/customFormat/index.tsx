@@ -378,7 +378,7 @@ export class CustomFormat implements Format {
       if (segment.isCubic()) {
         rtn +=
           this.applyTemplate(templates.curve ?? "", {
-            name: "name",
+            name: segment.controls[0].name + "_TO_" + segment.controls[3].name,
             x0: segment.controls[0].x.toUser(),
             y0: segment.controls[0].y.toUser(),
             x1: segment.controls[1].x.toUser(),
@@ -391,7 +391,7 @@ export class CustomFormat implements Format {
       } else if (segment.isLinear()) {
         rtn +=
           this.applyTemplate(templates.moveToPoint ?? "", {
-            name: "name",
+            name: segment.controls[0].name + "_TO_" + segment.controls[1].name,
             x0: segment.controls[0].x.toUser(),
             y0: segment.controls[0].y.toUser(),
             x1: segment.controls[1].x.toUser(),

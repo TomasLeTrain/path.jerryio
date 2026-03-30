@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    networks:
+      - shared-net
     restart: always
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080"]
@@ -12,3 +14,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 20s
+
+networks:
+  shared-net:
+    external: true
