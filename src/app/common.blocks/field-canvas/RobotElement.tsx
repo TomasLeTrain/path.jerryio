@@ -6,11 +6,22 @@ import { Group, Line, Rect } from "react-konva";
 const RobotElement = observer(
   (props: { fcc: FieldCanvasConverter; pos: EndControl; width: number; height: number }) => {
     const widthInPx = props.width * props.fcc.uol2pixel;
+    const forwardsOffset = 1.75;
+    const inner_goal_offset_x = 2.25 * props.fcc.uol2pixel;
+    const inner_goal_offset_y = 1.25 * props.fcc.uol2pixel;
+    const goal_offset_x = 3 * props.fcc.uol2pixel;
+    const goal_offset_y = 3 * props.fcc.uol2pixel;
+    const forwardsInPx = (props.height - forwardsOffset) * props.fcc.uol2pixel;
     const heightInPx = props.height * props.fcc.uol2pixel;
     const startInUOL = props.pos.toVector();
     const startInPx = props.fcc.toPx(startInUOL);
-    const centerInPx = new Vector(widthInPx / 2, heightInPx / 2);
-    const frontInPx = centerInPx.add(new Vector(0, -heightInPx / 2));
+    const centerInPx = new Vector(widthInPx / 2, forwardsInPx / 2);
+    const frontInPx = centerInPx.add(new Vector(0, -forwardsInPx / 2));
+
+    const matchloader_height = 2.25 * props.fcc.uol2pixel;
+    const matchloader_offset = widthInPx - 10 * props.fcc.uol2pixel;
+
+    const matchloader_width = 3 * props.fcc.uol2pixel;
 
     const lineWidth = props.fcc.heightInPx / 600;
 
@@ -20,7 +31,7 @@ const RobotElement = observer(
         x={startInPx.x}
         y={startInPx.y}
         offsetX={widthInPx / 2}
-        offsetY={heightInPx / 2}
+        offsetY={forwardsInPx / 2}
         listening={false}>
         <Rect
           x={0}
@@ -32,6 +43,42 @@ const RobotElement = observer(
           fill="#ffffff3f"
         />
         <Line points={[centerInPx.x, centerInPx.y, frontInPx.x, frontInPx.y]} stroke="ffffff" strokeWidth={lineWidth} />
+        <Line points={[widthInPx, forwardsInPx / 2, 0, forwardsInPx / 2]} stroke="ffffff" strokeWidth={lineWidth} />
+        <Line
+          points={[widthInPx - goal_offset_x, heightInPx - goal_offset_y, centerInPx.x, heightInPx]}
+          stroke="ffffff"
+          strokeWidth={lineWidth}
+        />
+        <Line
+          points={[goal_offset_x, heightInPx - goal_offset_y, centerInPx.x, heightInPx]}
+          stroke="ffffff"
+          strokeWidth={lineWidth}
+        />
+        <Line
+          points={[goal_offset_x, heightInPx - goal_offset_y, inner_goal_offset_x, heightInPx - inner_goal_offset_y]}
+          stroke="ffffff"
+          strokeWidth={lineWidth}
+        />
+        <Line
+          points={[
+            widthInPx - goal_offset_x,
+            heightInPx - goal_offset_y,
+            widthInPx - inner_goal_offset_x,
+            heightInPx - inner_goal_offset_y
+          ]}
+          stroke="ffffff"
+          strokeWidth={lineWidth}
+        />
+        <Line
+          points={[inner_goal_offset_x, heightInPx - inner_goal_offset_y, 0, heightInPx]}
+          stroke="ffffff"
+          strokeWidth={lineWidth}
+        />
+        <Line
+          points={[widthInPx - inner_goal_offset_x, heightInPx - inner_goal_offset_y, widthInPx, heightInPx]}
+          stroke="ffffff"
+          strokeWidth={lineWidth}
+        />
       </Group>
     );
   }
